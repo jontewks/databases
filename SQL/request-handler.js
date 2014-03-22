@@ -1,23 +1,18 @@
 var httpHelpers = require('./http-helpers');
 var db = require('./db-config.js');
+var url = require('url');
 
-var getMessagesInner = function(request, response,callback) {
-  // query database
-  db.dbConnection.query("select * from Messages", function(err, rows, fields){
-    callback(rows);
+var getMessages = function(request, response) {
+  db.getAllMessages(function(messagesArray){
+    httpHelpers.sendResponse(response, {results: messagesArray});
   });
 };
-
-getMessages(function(messages){
-    // give variable to send response
-    httpHelpers.sendResponse(response, {results: messages});
-});
 
 var postMessage = function(request, response) {
   httpHelpers.collectData(request, function(data) {
     var message = JSON.parse(data);
     // insert message into database
-
+    db.addToMessages(message);
     httpHelpers.sendResponse(response, null, 201);
   });
 };
@@ -39,4 +34,14 @@ exports.handler = function(request, response) {
   } else {
     httpHelpers.sendResponse(response, null, 404);
   }
+};
+
+var objectToInsert = function(object){
+  var roomname, username, message, result;
+  roomname = object.roomname;
+  username = object.username;
+  message = object.message;
+  result = "insert into Messages (roomname, username, message) values('" + roomname + "','" + username + "','"  + message +"')";
+
+  return result;
 };

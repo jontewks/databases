@@ -18,6 +18,7 @@ exports.collectData = function(request, callback){
     data += chunk;
   });
   request.on('end', function(){
+    console.log("data json parse = ", JSON.parse(data));
     callback(data);
   });
 };

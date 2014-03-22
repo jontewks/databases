@@ -3,6 +3,7 @@
 
 var mysql = require('mysql');
 var request = require("request"); // You might need to npm install the request module!
+var chai = require('chai');
 
 describe("Persistent Node Chat Server", function() {
   var dbConnection;
@@ -10,9 +11,9 @@ describe("Persistent Node Chat Server", function() {
   beforeEach(function(done) {
     dbConnection = mysql.createConnection({
     /* TODO: Fill this out with your mysql username */
-      user: "farjon",
+      user: "root",
     /* and password. */
-      password: "farjon",
+      password: "",
       database: "chat"
     });
     dbConnection.connect();
@@ -21,7 +22,8 @@ describe("Persistent Node Chat Server", function() {
 
     /* Empty the db table before each test so that multiple tests
      * (or repeated runs of the tests) won't screw each other up: */
-    dbConnection.query("DELETE FROM " + tablename, done);
+    // dbConnection.query("DELETE FROM " + tablename, done);
+    done();
   });
 
   afterEach(function() {
@@ -31,7 +33,7 @@ describe("Persistent Node Chat Server", function() {
   it("Should insert posted messages to the DB", function(done) {
     // Post a message to the node chat server:
     request({method: "POST",
-             uri: "http://127.0.0.1:8080/classes/room1",
+             uri: "http://127.0.0.1:3000/classes/messages",
              form: {username: "Valjean",
                     message: "In mercy's name, three days is all I need."}
             },
@@ -39,7 +41,7 @@ describe("Persistent Node Chat Server", function() {
               /* Now if we look in the database, we should find the
                * posted message there. */
 
-              var queryString = "";
+              var queryString = "select * from Messages";
               var queryArgs = [];
               /* TODO: Change the above queryString & queryArgs to match your schema design
                * The exact query string and query args to use
