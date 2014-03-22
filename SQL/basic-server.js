@@ -1,24 +1,8 @@
+/* Import node's http module: */
 var http = require('http');
 var request = require('./request-handler');
 var httpHelpers = require('./http-helpers');
-var url = require('url');
-
-/* If the node mysql module is not found on your system, you may
- * need to do an "sudo npm install -g mysql". */
-
-/* You'll need to fill the following out with your mysql username and password.
- * database: "chat" specifies that we're using the database called
- * "chat", which we created by running schema.sql.*/
-
-/* Now you can make queries to the Mysql database using the
- * dbConnection.query() method.
- * See https://github.com/felixge/node-mysql for more details about
- * using this module.*/
-
-/* You already know how to create an http server from the previous
- * assignment; you can re-use most of that code here. */
-
-/* Import node's http module: */
+var url = require('url')
 
 // var request = require('./request-handler');
 
